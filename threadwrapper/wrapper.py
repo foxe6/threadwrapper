@@ -5,7 +5,7 @@ from debugging import *
 from omnitools import *
 
 
-__ALL__ = ["Threadswrapper"]
+__ALL__ = ["Threadswrapper", "args"]
 
 
 class ThreadWrapper(object):
