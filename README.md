@@ -1,4 +1,4 @@
-# Thread Wrapper
+# Thread Wrapper Class
 
 <badges>[![version](https://img.shields.io/pypi/v/threadwrapper.svg)](https://pypi.org/project/threadwrapper/)
 [![license](https://img.shields.io/pypi/l/threadwrapper.svg)](https://pypi.org/project/threadwrapper/)
@@ -14,9 +14,10 @@
 
 ```
 threadwrapper
-'---- ThreadWrapper()
-    |---- add()
-    '---- wait()
+|---- ThreadWrapper()
+|   |---- add()
+|   '---- wait()
+'---- args()
 ```
 
 # Example
@@ -29,14 +30,9 @@ def a(b, c=None):
 tw = ThreadWrapper(threading.Semaphore(1))
 result = {}
 for i in range(10):
+    # args() is used to collect positional and keyword arguments as is
     tw.add(job=a, args=args(i**2, c=i**3), result=result, key=i)
 tw.wait()
 print(result)
-# {0: '0, 0', 1: '1, 1', 2: '4, 8', 3: '9, 27', 4: '16, 64', 5: '25, 125', 6: '36, 216', 7: '49, 343', 8: '64, 512', 9: '81, 729'}
-```
-
-## shell
-```shell script
-threadwrapper.exe
 # {0: '0, 0', 1: '1, 1', 2: '4, 8', 3: '9, 27', 4: '16, 64', 5: '25, 125', 6: '36, 216', 7: '49, 343', 8: '64, 512', 9: '81, 729'}
 ```

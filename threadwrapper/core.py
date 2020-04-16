@@ -1,8 +1,7 @@
-import sys
 import time
 import threading
 from debugging import *
-from omnitools import *
+from omnitools import list_or_dict, p
 
 
 __ALL__ = ["Threadswrapper", "args"]
