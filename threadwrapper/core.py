@@ -17,6 +17,7 @@ class ThreadWrapper(object):
 
     def __run_job(self, job: Callable[[Any], Any], args: tuple = None, result: list_or_dict = None,
                   key: Any = None) -> None:
+        self.sema.acquire()
         try:
             kwargs = args[1]
             args = args[0]
@@ -39,6 +40,8 @@ class ThreadWrapper(object):
                     p(s)
         except:
             p(debug_info()[0])
+        finally:
+            self.sema.release()
 
     def add(self, job: Callable[[Any], Any], args: tuple = ((), {}), result: list_or_dict = None,
             key: Any = None) -> bool:
@@ -56,8 +59,5 @@ class ThreadWrapper(object):
             thread.join()
         return True
 
-
-def args(*args, **kwargs):
-    return args, kwargs
 
 

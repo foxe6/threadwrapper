@@ -1,6 +1,5 @@
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 __keywords__ = ["thread wrapper class"]
-__entry__ = "test:main"
 
 
 if not __version__.endswith(".0"):
