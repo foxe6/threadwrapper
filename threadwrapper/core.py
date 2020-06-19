@@ -8,25 +8,22 @@ __ALL__ = ["Threadswrapper", "args"]
 
 
 class ThreadWrapper(object):
-    total_thread_count = 0
-
     def __init__(self, semaphore: threading.Semaphore) -> None:
+        self.total_thread_count = 0
         self.threads = []
         self.sema = semaphore
         self.debug_time = False
 
-    def __run_job(self, job: Callable[[Any], Any], args: tuple = None, result: list_or_dict = None,
+    def __run_job(self, job: Callable[[], Any], result: list_or_dict = None,
                   key: Any = None) -> None:
         self.sema.acquire()
         try:
-            kwargs = args[1]
-            args = args[0]
             start_time = time.time()
             self.total_thread_count += 1
             if isinstance(result, list):
-                result += job(*args, **kwargs)
+                result += job()
             elif isinstance(result, dict):
-                result[key] = job(*args, **kwargs)
+                result[key] = job()
             duration = time.time()-start_time
             if self.debug_time:
                 count = str(self.total_thread_count).ljust(20)
@@ -43,13 +40,13 @@ class ThreadWrapper(object):
         finally:
             self.sema.release()
 
-    def add(self, job: Callable[[Any], Any], args: tuple = ((), {}), result: list_or_dict = None,
+    def add(self, job: Callable[[], Any], result: list_or_dict = None,
             key: Any = None) -> bool:
         if result is None:
             result = {}
         if key is None:
             key = 0
-        thread = threading.Thread(target=self.__run_job, args=(job, args, result, key))
+        thread = threading.Thread(target=self.__run_job, args=(job, result, key))
         self.threads.append(thread)
         thread.start()
         return True
